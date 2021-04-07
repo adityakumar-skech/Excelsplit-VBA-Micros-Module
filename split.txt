@@ -1,0 +1,36 @@
+Sub Test()
+  Dim wb As Workbook
+  Dim ThisSheet As Worksheet
+  Dim NumOfColumns As Integer
+  Dim RangeToCopy As Range
+  Dim WorkbookCounter As Integer
+  Dim RowsInFile
+  Dim Prefix As String
+
+  Application.ScreenUpdating = False
+
+  'Initialize data
+  Set ThisSheet = ThisWorkbook.ActiveSheet
+  NumOfColumns = ThisSheet.UsedRange.Columns.Count
+  WorkbookCounter = 1
+  RowsInFile = 100                   'how many rows (incl. header) in new files?
+  Prefix = "test"                    'prefix of the file name
+
+  For p = 1 To ThisSheet.UsedRange.Rows.Count Step RowsInFile
+    Set wb = Workbooks.Add
+
+    'Paste the chunk of rows for this file
+    Set RangeToCopy = ThisSheet.Range(ThisSheet.Cells(p, 1), ThisSheet.Cells(p + RowsInFile - 1, NumOfColumns))
+    RangeToCopy.Copy wb.Sheets(1).Range("A1")
+
+    'Save the new workbook, and close it
+    wb.SaveAs ThisWorkbook.Path & "\" & Prefix & "_" & WorkbookCounter
+    wb.Close
+
+    'Increment file counter
+    WorkbookCounter = WorkbookCounter + 1
+  Next p
+
+  Application.ScreenUpdating = True
+  Set wb = Nothing
+End Sub
