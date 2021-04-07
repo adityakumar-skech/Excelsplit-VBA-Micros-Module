@@ -1,6 +1,5 @@
 # excel-split
-divide excel using number of rows vba script 
-##################################################
+
 You can do it this way with a helper column:
 
 1st -- insert a column at the left (i.e column A).
